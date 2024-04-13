@@ -23,6 +23,8 @@ else:
             # pegar o nome do arquivo
             file_name = os.path.basename(excel_file)
             
+            df_temp['filename'] = file_name
+            
             if 'brasil' in file_name.lower():
                 df_temp['location'] = 'br'
             elif 'france' in file_name.lower():
@@ -46,3 +48,14 @@ if dfs:
     
     # caminho de saída
     output_file = os.path.join('src', 'data', 'ready', 'clean.xlsx')
+    
+    # configurar motor de escrita
+    writer = pd.ExcelWriter(output_file, engine='xlsxwriter')
+    
+    # leva os dados do resultado a serem escritos no motor de excel configurado
+    result.to_excel(writer, index=False)
+    
+    # salva o arquivo de excel
+    writer._save()
+else:
+    print('Nenhum dado para ser salvo.')
