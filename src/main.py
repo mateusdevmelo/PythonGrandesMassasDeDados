@@ -33,7 +33,16 @@ else:
             # criar uma nova coluna chamada campaign
             df_temp['campaign'] = df_temp['utm_link'].str.extract(r'utm_campaign=(.*)')   
             
-            print(df_temp)
+            # guarda dados tratados dentro de um dataframe comum
+            dfs.append(df_temp)
             
         except Exception as e:
             print(f'Erro ao ler o arquivo`{excel_file} : {e}')
+
+if dfs:
+    
+    # concatena todas as tabelas salvas no dfs em uma única tabela
+    result = pd.concat(dfs, ignore_index=True)
+    
+    # caminho de saída
+    output_file = os.path.join('src', 'data', 'ready', 'clean.xlsx')
